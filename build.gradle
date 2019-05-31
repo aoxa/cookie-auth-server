@@ -26,6 +26,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
+    compile group: 'org.bouncycastle', name: 'bcmail-jdk15on', version: 1.51
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.apache.commons:commons-lang3")
     testCompile("junit:junit")
 }
