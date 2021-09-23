@@ -5,7 +5,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import sun.security.x509.X509CertImpl;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -44,8 +43,10 @@ public class AuthController {
 
         if ("rsa".equals(type)) {
             authValue = getRSAEncrypted();
-        } else {
+        } else if("aes".equals(type)) {
             authValue = getAESEncrypted();
+        } else {
+            authValue = Base64.getEncoder().encodeToString(getUserInfo().getBytes("UTF-8"));
         }
 
         //authValue = "ua+vmcsr4mcKS3wpt0TZ2vNaboXe53XpZ2+5WCFnKLZ8gQuak/ibyXa+V3bB9g44bo/e8WOzXq6NBqdFVIlxjMk+tiADnjQPaE5U12UMZWxp2g9Zz01mbYtKGjQ0/KEU7tfamH8xCI0Nry07CO7HAkhrtsFcdFIFQbI7Kv8IE42Xe4FQGLWzTFV5mzEh6tRFs3+xs9tngce0aPfUAUigW9CWjR9K8yYzeVzkG7yrt+bwjiAoUmKx05Vcj0RHcL9g3+FZ2jRmd1XttdA4TvgQs+Y7c1vJQnY9M8INdEZ5V9AmW/4JvnkIcJ0dRf7yI4awXHAwnVPd4gQKj0v0hIb87W2fzr5tSEmWDlX5a1VMURb5iZ+OJCzgfDky+EqqM8gnDVT4nmcIl9ymTXw6mgVyTRRT0DikCYlEfNqNpcGrKQhEopFTURItqWnl5B+Lj+OhDybhXKTRoS9lNN3xlA1TsHSLJYcXOh7L3UlYLm0gZOtyOip2AKwcGSIrP+VSD0EH0v5/od54r7GODSPtw6xKPrc4+yqgUixR8fHimTwJpVbbdUtVvviBBc65h60cg6W/jXSTZJaPKUyOx3xhKO6Ea7Y2GftNJOEbguuXJah10+NKdmvvi7UexicoYiaDx/AuBVTKPbetZDPsTbnXRGNNv8GW0ATJrIuKDTTTxlGh2wg=";
@@ -210,9 +211,13 @@ public class AuthController {
         }
 
         result.append(Base64.getEncoder().encodeToString(
-                cipher.doFinal("{\"userId\":\"ssaa27226327\",\"userName\":\"Pepe Trueno\",\"email\":\"pedro.zuppelli+08@gmail.com\"}".getBytes("UTF-8"))));
+                cipher.doFinal(getUserInfo().getBytes("UTF-8"))));
 
         return result.toString();
+    }
+
+    private String getUserInfo() {
+        return "{\"userId\":\"ssaa27ss226327\",\"userName\":\"ANON_AAA_USER\",\"email\":\"pedro.zuppelli+09@gmail.com\"}";
     }
 }
 
